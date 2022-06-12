@@ -23,7 +23,7 @@ import CustomisableAlert from 'react-native-customisable-alert'
 type ActivateModal = 'UP' | 'DOWN'
 
 // { port }: { port?: Port }
-const poortGraph = () => {
+const PoortGraph = ({ openModal }) => {
   const [evenPortList, setEvenPortList] = useState<Port[] | undefined>([])
   const [oddPortList, setOddPortList] = useState<Port[] | undefined>([])
   const [modalVisible, setModalVisible] = useState(false)
@@ -32,6 +32,7 @@ const poortGraph = () => {
 
   const showModal = (pn) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    openModal()
   }
 
   ViroARTrackingTargets.createTargets({
@@ -159,15 +160,15 @@ const poortGraph = () => {
 }
 
 export default () => {
-  const [showModal, setShowModal] = useState<ActivateModal | undefined>()
+  const [modalVisible, setModalVisible] = useState(false)
   return (
     <>
       <ViroARSceneNavigator
         shadowsEnabled={true}
         autofocus={true}
-        initialScene={{ scene: poortGraph }}
+        initialScene={{ scene: <PoortGraph openModal={() => setModalVisible(true)} /> }}
       />
-      {showModal === 'UP' && <PortModal />}
+      <PortModal visible={modalVisible} hideModal={() => setModalVisible(false)} />
       <ProfileBtn />
     </>
   )

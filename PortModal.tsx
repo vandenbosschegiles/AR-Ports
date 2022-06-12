@@ -21,27 +21,25 @@ import color from '../styles/color'
 import Port from '../interfaces/Port'
 import core from '../styles/core'
 
-const PortModal = ({ visible }: { visible?: boolean }) => {
+const PortModal = ({ visible, hideModal }: { visible?: boolean, hideModal: () => void }) => {
   // { port }: { port?: Port }
 
-  const [modalVisible, setModalVisible] = useState(true)
-  if (visible !== undefined) setModalVisible(visible)
   return (
     <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={visible}
         onRequestClose={() => {
           // Alert.alert('Modal has been closed.')
-          setModalVisible(!modalVisible)
+          hideModal()
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={hideModal}
             >
               <FontAwesome name="close" size={28} color="black" />
             </Pressable>
